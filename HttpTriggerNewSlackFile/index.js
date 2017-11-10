@@ -58,3 +58,7 @@ module.exports = function (context, req) {
 };
 
 
+function GetEnvironmentVariable(name) {
+    return name + ": " + process.env[name];
+}
+
