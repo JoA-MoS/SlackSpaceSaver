@@ -1,5 +1,5 @@
-import { createAzureFunctionHandler } from "azure-function-express";
-import express from "express";
+const createAzureFunctionHandler = require("azure-function-express").createAzureFunctionHandler;
+const express = require("express");
 
 // Create express app as usual
 const app = express();
@@ -11,4 +11,4 @@ app.get("/api/:foo/:bar", (req, res) => {
 });
 
 // Binds the express app to an Azure Function handler
-export default createAzureFunctionHandler(app);
+module.exports = createAzureFunctionHandler(app);
