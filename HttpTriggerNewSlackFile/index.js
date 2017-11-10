@@ -5,20 +5,40 @@ module.exports = function (context, req) {
     // if req has a body process body
     if (req.body) {
         // if a challenge request respond with challenge
-        if (req.body.challenge) {
-            context.res = {
-                // status: 200, /* Defaults to 200 */
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: { challenge: req.body.challenge }
+        if (req.body.type) {
+            switch (req.body.type) {
+                case 'url_verification':
+                    context.res = {
+                        // status: 200, /* Defaults to 200 */
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: { challenge: req.body.challenge }
 
-            };
-        }
-        // Not a challenge so lets process the message
-        else {
-            context.log(req.body);
+                    };
+                    break;
+                case 'file_change':
+                    context.res = {
+                        // status: 200, /* Defaults to 200 */
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: { incoming_req: req.body }
 
+                    };
+                    break;
+
+                default:
+                    context.res = {
+                        // status: 200, /* Defaults to 200 */
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: { error: context.req.type + 'is not implemented' }
+
+                    };
+                    break;
+            }
         }
     }
     context.done();
