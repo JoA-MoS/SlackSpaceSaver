@@ -3,11 +3,13 @@ var request = require("request");
 module.exports = function (context, req) {
     context.log('================== New Req ======================');
     // context.log(context);
-    // context.log(req);
+
     // if req has a body process body
     if (req.body) {
-        // if a challenge request respond with challenge
+        context.log(req.body);
+
         if (req.body.type) {
+            // if a challenge request respond with challenge
             switch (req.body.type) {
                 case 'url_verification':
                     challengeValidation(context, req);
