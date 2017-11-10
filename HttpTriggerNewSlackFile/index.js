@@ -10,30 +10,13 @@ module.exports = function (context, req) {
         if (req.body.type) {
             switch (req.body.type) {
                 case 'url_verification':
-                    context.log('url_verification');
-                    context.res = {
-                        // status: 200, /* Defaults to 200 */
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: { challenge: req.body.challenge }
-                    };
+                    challengeValidation(context, req);
                     break;
                 case 'event_callback':
                     switch (req.body.event.type) {
                         case 'file_created':
                             context.log('file_created');
-                            options = {
-                                method: 'GET',
-                                uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${req.body.event.file_id}`,
-                                //headers: headers
-                            };
-                            context.log(options.uri);
-                            request(options, function (error, res, body) {
-                                context.log(error);
-                                context.log(body);
-                                context.res = { body: body || '' };
-                            });
+                            context.log(getSlackFileInfo(req.body.event.file_id));
                             break;
                         case 'file_change':
                             context.log('file_change');
@@ -86,6 +69,32 @@ module.exports = function (context, req) {
     context.done();
 };
 
+
+function challengeValidation(context, req) {
+    context.log('url_verification');
+    context.res = {
+        // status: 200, /* Defaults to 200 */
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: { challenge: req.body.challenge }
+    };
+}
+
+function getSlackFileInfo(fileId) {
+    options = {
+        method: 'GET',
+        uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${fileId}`,
+        //headers: headers
+    };
+    context.log(options.uri);
+    let fileInfo = {};
+    request(options, function (error, res, body) {
+        context.log(error);
+        fileInfo = body;
+    });
+    return fileInfo;
+}
 
 function GetEnvironmentVariable(name) {
     return name + ": " + process.env[name];
