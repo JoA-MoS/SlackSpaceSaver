@@ -49,12 +49,16 @@ module.exports = function (context, req) {
                 default:
                     context.log('default');
                     context.log({ error: req.body.type + ' is not implemented' });
+                    context.log(req);
                     context.res = {
                         // status: 200, /* Defaults to 200 */
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: { error: req.body.type + ' is not implemented' }
+                        body: {
+                            error: req.body.type + ' is not implemented',
+                            request: req
+                        }
 
                     };
                     break;
