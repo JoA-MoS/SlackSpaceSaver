@@ -11,6 +11,10 @@ module.exports = function (context, req) {
                 body: { challenge: req.body.challenge }
 
             };
+        }
+        // Not a challenge so lets process the message
+        else {
+            context.log(req.body);
 
         }
     }
