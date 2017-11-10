@@ -25,11 +25,11 @@ module.exports = function (context, req) {
                         uri: `https://slack.com/api/files.info?token=${GetEnvironmentVariable('Slack_Token')}&file=${req.body.file_id}`,
                         //headers: headers
                     };
+                    context.log(options.uri);
                     request(options, function (error, res, body) {
                         context.log(error);
                         context.log(body);
                         context.res = { body: body || '' };
-                        context.done();
                     });
                     break;
                 case 'file_change':
