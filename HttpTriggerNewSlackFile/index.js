@@ -47,6 +47,7 @@ module.exports = function (context, req) {
                     break;
 
                 default:
+                    context.log('default');
                     context.res = {
                         // status: 200, /* Defaults to 200 */
                         headers: {
