@@ -4,8 +4,7 @@
       "authLevel": "function",
       "type": "httpTrigger",
       "direction": "in",
-      "name": "req",
-      "route": "file"
+      "name": "req"
     },
     {
       "type": "http",
