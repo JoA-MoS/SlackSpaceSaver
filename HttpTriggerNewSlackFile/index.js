@@ -14,18 +14,21 @@ module.exports = function (context, req) {
                             'Content-Type': 'application/json'
                         },
                         body: { challenge: req.body.challenge }
-
                     };
                     break;
-                case 'file_created':
-                    context.res = {
-                        // status: 200, /* Defaults to 200 */
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: { incoming_req: req.body }
 
+                case 'file_created':
+                    options = {
+                        method: 'GET',
+                        uri: `https://slack.com/api/files.info?token=xoxp-42845872033-42840754535-267950579730-e7aaf929558474cbd23c78b83c625b1a&file=${req.body.file_id}`,
+                        headers: headers
                     };
+                    request(options, function (error, res, body) {
+                        context.log(error);
+                        context.log(body);
+                        context.res = { body: body || '' };
+                        context.done();
+                    });
                     break;
                 case 'file_change':
                     context.res = {
