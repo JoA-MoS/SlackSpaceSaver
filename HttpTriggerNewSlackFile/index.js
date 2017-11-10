@@ -20,8 +20,8 @@ module.exports = function (context, req) {
                 case 'file_created':
                     options = {
                         method: 'GET',
-                        uri: `https://slack.com/api/files.info?token=xoxp-42845872033-42840754535-267950579730-e7aaf929558474cbd23c78b83c625b1a&file=${req.body.file_id}`,
-                        headers: headers
+                        uri: `https://slack.com/api/files.info?token=${GetEnvironmentVariable('Slack_Token')}&file=${req.body.file_id}`,
+                        //headers: headers
                     };
                     request(options, function (error, res, body) {
                         context.log(error);
