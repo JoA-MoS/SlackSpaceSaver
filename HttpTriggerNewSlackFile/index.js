@@ -19,32 +19,50 @@ module.exports = function (context, req) {
                         body: { challenge: req.body.challenge }
                     };
                     break;
+                case 'event_callback':
+                    switch (req.body.event.type) {
+                        case 'file_created':
+                            context.log('file_created');
+                            options = {
+                                method: 'GET',
+                                uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${req.body.file_id}`,
+                                //headers: headers
+                            };
+                            context.log(options.uri);
+                            request(options, function (error, res, body) {
+                                context.log(error);
+                                context.log(body);
+                                context.res = { body: body || '' };
+                            });
+                            break;
+                        case 'file_change':
+                            context.log('file_change');
+                            context.res = {
+                                // status: 200, /* Defaults to 200 */
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: { incoming_req: req.body }
 
-                case 'file_created':
-                    context.log('file_created');
-                    options = {
-                        method: 'GET',
-                        uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${req.body.file_id}`,
-                        //headers: headers
-                    };
-                    context.log(options.uri);
-                    request(options, function (error, res, body) {
-                        context.log(error);
-                        context.log(body);
-                        context.res = { body: body || '' };
-                    });
-                    break;
-                case 'file_change':
-                    context.log('file_change');
-                    context.res = {
-                        // status: 200, /* Defaults to 200 */
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: { incoming_req: req.body }
+                            };
+                            break;
+                        default:
+                            context.log('event default');
+                            context.log({ error: req.body.event.type + ' is not implemented' });
+                            context.log(req);
+                            context.res = {
+                                // status: 200, /* Defaults to 200 */
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: {
+                                    error: req.body.type + ' is not implemented',
+                                    request: req
+                                }
+                            };
+                            break;
 
-                    };
-                    break;
+                    }
 
                 default:
                     context.log('default');
