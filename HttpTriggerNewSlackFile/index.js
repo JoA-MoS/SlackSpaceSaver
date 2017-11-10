@@ -1,3 +1,5 @@
+var request = require("request");
+
 module.exports = function (context, req) {
     context.log('================== New Req ======================');
     // context.log(context);
