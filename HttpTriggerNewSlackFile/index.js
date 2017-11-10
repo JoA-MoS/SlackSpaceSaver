@@ -44,7 +44,7 @@ module.exports = function (context, req) {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: { error: context.req.type + ' is not implemented' }
+                        body: { error: req.body.type + ' is not implemented' }
 
                     };
                     break;
