@@ -2,7 +2,7 @@
 'use strict';
 
 const createSlackEventAdapter = require('@slack/events-api').createSlackEventAdapter;
-const slackEvents = createSlackEventAdapter(process.env.SLACK_VERIFICATION_TOKEN);
+const slackEvents = createSlackEventAdapter(process.env['Slack_Token']);
 
 const createAzureFunctionHandler = require('azure-function-express').createAzureFunctionHandler;
 const express = require('express');
