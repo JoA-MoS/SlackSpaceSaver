@@ -1,4 +1,5 @@
 module.exports = function (context, req) {
+    context.log('================== New Req ======================');
     // if req has a body process body
     if (req.body) {
         // if a challenge request respond with challenge
