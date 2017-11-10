@@ -4,6 +4,7 @@ const express = require("express");
 // Create express app as usual
 const app = express();
 app.post("/api/:foo/:bar", (req, res) => {
+    req.context.log({ Log: "I ran" });
     res.json({
         foo: req.params.foo,
         bar: req.params.bar
