@@ -16,7 +16,7 @@ module.exports = function (context, req) {
                     switch (req.body.event.type) {
                         case 'file_created':
                             context.log('file_created');
-                            context.log(getSlackFileInfo(req.body.event.file_id));
+                            context.log(getSlackFileInfo(context, req.body.event.file_id));
                             break;
                         case 'file_change':
                             context.log('file_change');
@@ -81,7 +81,7 @@ function challengeValidation(context, req) {
     };
 }
 
-function getSlackFileInfo(fileId) {
+function getSlackFileInfo(context, fileId) {
     options = {
         method: 'GET',
         uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${fileId}`,
