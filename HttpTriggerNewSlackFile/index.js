@@ -10,6 +10,7 @@ module.exports = function (context, req) {
         if (req.body.type) {
             switch (req.body.type) {
                 case 'url_verification':
+                    context.log('url_verification');
                     context.res = {
                         // status: 200, /* Defaults to 200 */
                         headers: {
@@ -20,6 +21,7 @@ module.exports = function (context, req) {
                     break;
 
                 case 'file_created':
+                    context.log('file_created');
                     options = {
                         method: 'GET',
                         uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${req.body.file_id}`,
@@ -33,6 +35,7 @@ module.exports = function (context, req) {
                     });
                     break;
                 case 'file_change':
+                    context.log('file_change');
                     context.res = {
                         // status: 200, /* Defaults to 200 */
                         headers: {
