@@ -1,0 +1,17 @@
+{
+    "token": "1T9LUtvoIGYNNeXQ6DzJKBcQ",
+    "team_id": "T18QVRN0Z",
+    "api_app_id": "A7W2EV945",
+    "event": {
+        "type": "file_created",
+        "file_id": "F7XVDT3QQ",
+        "user_id": "U18QQN6FR",
+        "event_ts": "1510358488.000040"
+    },
+    "type": "event_callback",
+    "event_id": "Ev7YK8TUNN",
+    "event_time": 1510358488,
+    "authed_users": [
+        "U18QQN6FR"
+    ]
+}
