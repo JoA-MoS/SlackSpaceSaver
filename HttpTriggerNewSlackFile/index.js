@@ -1,7 +1,11 @@
-var request = require('request');
+const request = require('request');
+
+
 
 module.exports = function (context, req) {
+    const SLACK_TOKEN = process.env['SLACK_TOKEN'];
     context.log('================== New Req ======================');
+    context.log(SLACK_TOKEN);
     // context.log(context);
 
     // if req has a body process body
@@ -11,10 +15,10 @@ module.exports = function (context, req) {
             // if a challenge request respond with challenge
             switch (req.body.type) {
                 case 'url_verification':
-                    challengeValidation(context, req.body);
+                    challengeValidation(req.body);
                     break;
                 case 'event_callback':
-                    handleSlackEvents(context, req.body.event);
+                    handleSlackEvents(req.body.event);
                     break;
                 default:
                     context.log('default');
@@ -29,7 +33,7 @@ module.exports = function (context, req) {
     }
 
 
-    function handleSlackEvents(context, event) {
+    function handleSlackEvents(event) {
         switch (event.type) {
             case 'file_created':
                 context.log('file_created');
@@ -51,27 +55,21 @@ module.exports = function (context, req) {
     }
 
 
-    function challengeValidation(context, body) {
+    function challengeValidation(body) {
         context.log('url_verification');
-        context.res = {
-            // status: 200, /* Defaults to 200 */
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: { challenge: body.challenge }
-        };
+        sendJsonResponse(context, { challenge: body.challenge });
     }
 
-    function getSlackFileInfo(context, fileId) {
+    function getSlackFileInfo(fileId, cb) {
         options = {
             method: 'GET',
-            uri: `https://slack.com/api/files.info?token=${process.env['Slack_Token']}&file=${fileId}`
+            uri: `https://slack.com/api/files.info?token=${SLACK_TOKEN}&file=${fileId}`
             //headers: headers
         };
         context.log(options.uri);
         request(options, function (error, res, body) {
             if (!error && res.statusCode === 200) {
-                sendJsonResponse(context, JSON.parse(body));
+                sendJsonResponse(JSON.parse(body));
             }
             else {
                 context.log(error);
@@ -80,7 +78,7 @@ module.exports = function (context, req) {
     }
 
 
-    function sendJsonResponse(context, body, status = 200) {
+    function sendJsonResponse(body, status = 200) {
         context.res = {
             status: status, /* Defaults to 200 */
             headers: {
